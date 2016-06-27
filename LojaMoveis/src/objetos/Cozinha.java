@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Cozinha extends Comodo{
 	public long id;
+	public String tipoComodo;
 	public List<Mobilia> mobilias;
 	
 
