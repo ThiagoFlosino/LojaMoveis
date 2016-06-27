@@ -50,6 +50,11 @@
 							<label for="campo1">Tipo Comodo</label> <input type="text"
 								class="form-control" name="tipoComodo">
 						</div>
+						<div class="form-group col-md-4">
+							<label for="campo4">Tipo Mobilia</label> <input type="text"
+								class="form-control" name="tipoMobilia">
+						</div>
+						
 
 						<div class="form-group col-md-4">
 							<label for="campo2">Descrição</label> <input type="text"

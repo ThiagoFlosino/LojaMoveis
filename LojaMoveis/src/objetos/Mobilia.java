@@ -13,8 +13,15 @@ public class Mobilia {
 	public float custo;
 	public int tempoEntrega;
 	public String tipoComodo;
+	public String tipoMobilia;
 	
 	
+	public String getTipoMobilia() {
+		return tipoMobilia;
+	}
+	public void setTipoMobilia(String tipoMobilia) {
+		this.tipoMobilia = tipoMobilia;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -15,6 +15,7 @@
 <title>Listar Mobilias</title>
 </head>
 <body>
+<input type="hidden" name="tipo_mobilia"/>
 <nav class="navbar navbar-inverse navbar-fixed-top">
  <div class="container-fluid">
   <div class="navbar-header">
@@ -68,6 +69,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
+					<th>Tipop Comodo</th>
 					<th>Tipo de Mobília</th>
 					<th>Descricao</th>
 					<th>Custo</th>
@@ -84,6 +86,7 @@
 				<tr>
 					<td><input type="checkbox" name="listID" value="<%=mobiliai.getId()%>"/></td>
 					<td><%=mobiliai.getTipoComodo()%></td>
+					<td><%=mobiliai.getTipoMobilia()%></td>
 					<td><%=mobiliai.getDescricao()%></td>
 					<td><%=mobiliai.getCusto()%></td>
 					<td><%=mobiliai.getTempoEntrega()%></td>
@@ -97,6 +100,7 @@
 		</table>
 		<hr />
 		<button type="submit" name="acao" class="btn btn-primary" value="Listar">Listar</button>
+		<button type="submit" name="acao" class="btn btn-success" value="Cadastrar">Cadastar</button>
 		<button type="submit" name="acao" class="btn btn-danger" value="Excluir">Excluir</button>		
 	</form>
 </div>

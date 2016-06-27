@@ -116,7 +116,7 @@ public class cozinhaMapper {
 		try {
 			System.out.println("Entrou no Try");
 			STM = con.prepareStatement(base_query);
-			STM.setArray(1,remover);
+			//STM.setArray(1,remover);
 			System.out.println(STM.toString());
 			STM.execute();
 			cozinhaMapper.close();

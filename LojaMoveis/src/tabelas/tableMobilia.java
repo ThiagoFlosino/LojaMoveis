@@ -19,7 +19,7 @@ public class tableMobilia extends HttpServlet {
 
 	private static final long serialVersionUID = -3159197901777622791L;
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Do Post---------------------");
+//		System.out.println("Do Post---------------------");
 		String acao = (String) request.getParameter("acao");
 		if (acao != null){
 			switch (acao) {
@@ -38,10 +38,11 @@ public class tableMobilia extends HttpServlet {
 		float custo = Float.parseFloat(request.getParameter("custo"));
 		int tempoEntrega = Integer.parseInt(request.getParameter("tempoEntrega"));
 		String tipoComodo = (String)request.getParameter("tipoComodo");
+		String tipoMobilia = (String)request.getParameter("tipoMobilia");
 		
 		try {
-			mobiliaMapper.insert(request.getSession(), descricao, custo, tempoEntrega, tipoComodo);
-			request.getRequestDispatcher("/listarMobilia.jsp").forward(request, response);;
+			mobiliaMapper.insert(request.getSession(), descricao, custo, tempoEntrega, tipoComodo, tipoMobilia);
+			request.getRequestDispatcher("/listarMobilia.jsp").forward(request, response);
 //			request.setAttribute("message", "Novo departamento criado!");
 			
 		} catch (Exception e) {
@@ -62,13 +63,18 @@ public class tableMobilia extends HttpServlet {
 					System.out.println("Entrou no doGet Listar");
 					listarMobilia(request, response);
 					break;
+				case "Cadastrar":
+					System.out.println("Entrou no doGet Cadastrar");
+					request.getRequestDispatcher("/cadastrarMobilia.jsp").forward(request, response);
+					break;
 			}
 		}
 	}
 	
 	private void listarMobilia(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			request.setAttribute("mobilias", mobiliaMapper.listar(request.getSession(),request.getParameter("tipoComodo")));
+			request.setAttribute("mobilias", mobiliaMapper.listar(request.getSession(),request.getParameter("tipoComodo"),
+					request.getParameter("tipoMobilia")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
