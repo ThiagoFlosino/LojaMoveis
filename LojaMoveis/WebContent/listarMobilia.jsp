@@ -40,31 +40,7 @@
 
 <div id="main" class="container-fluid" style="padding-top: 20px;">
 	<h3 class="page-header">Listar Mobilia</h3>
-		<!-- <form action="Cozinha" method="post">
-			<div id="actions" class="row">
-    			<div class="col-md-12">
-					<div class="row">
-						<div class="form-group col-md-4">
-							<label for="campo1">Descrição</label> <input type="text"
-								class="form-control" id="descricao">
-						</div>
-
-						<div class="form-group col-md-4">
-							<label for="campo2">Campo Dois</label> <input type="text"
-								class="form-control" id="campo3">
-						</div>
-
-						<div class="form-group col-md-4">
-							<label for="campo3">Campo Três</label> <input type="text"
-								class="form-control" id="campo3">
-						</div>
-					</div>
-					<hr />
-					<button type="submit" class="btn btn-success" name="acao" value="Adicionar">Adicionar</button>
-				</div>
-			</div>
-		</form>
- -->	<form action="Mobilia" method="get">
+	<form action="Mobilia" method="get">
 		<table width="80%" class="table table-hover col-md-4">
 			<thead>
 				<tr>

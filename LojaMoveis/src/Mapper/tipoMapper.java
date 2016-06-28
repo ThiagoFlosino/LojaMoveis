@@ -81,6 +81,7 @@ public class tipoMapper {
 		List<Tipo> retorno = new ArrayList<Tipo>();
 		String base_query = "SELECT * FROM TIPO";
 		try{
+			System.out.println(tipo);
 			if(tipo != null){
 				String q = " WHERE DESCRICAO in (?)";
 				base_query += q;
@@ -95,6 +96,7 @@ public class tipoMapper {
 				retorno.add(novo);
 			}
 			tipoMapper.close();
+			System.out.println(retorno.get(0).getDescricao());
 			return retorno;
 		}catch(SQLException e){
 			e.printStackTrace();

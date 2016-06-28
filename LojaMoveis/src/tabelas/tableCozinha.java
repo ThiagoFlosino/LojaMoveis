@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import Mapper.cozinhaMapper;
 
-
 @WebServlet("/Cozinha")
 public class tableCozinha extends HttpServlet {
 
@@ -25,6 +24,10 @@ public class tableCozinha extends HttpServlet {
 				case "Adicionar":
 				criarCozinha(request,response);
 					break;
+				case "listarMobilia":
+					listarMobilia(request,response);
+					break;
+
 			}
 		}else{
 			request.getRequestDispatcher("/teste.jsp").forward(request,response);	
@@ -84,5 +87,9 @@ public class tableCozinha extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
+	}
+	private void listarMobilia(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+		System.out.println("Entrou no listar mobilia ---------------");
+		tableMobilia.listarMobilia(request,response);
 	}
 }

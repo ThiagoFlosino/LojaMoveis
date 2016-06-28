@@ -24,7 +24,7 @@ public class tableMobilia extends HttpServlet {
 		if (acao != null){
 			switch (acao) {
 				case "Adicionar":
-				criarMobilia(request,response);
+					criarMobilia(request,response);
 					break;
 			}
 		}else{
@@ -43,8 +43,6 @@ public class tableMobilia extends HttpServlet {
 		try {
 			mobiliaMapper.insert(request.getSession(), descricao, custo, tempoEntrega, tipoComodo, tipoMobilia);
 			request.getRequestDispatcher("/listarMobilia.jsp").forward(request, response);
-//			request.setAttribute("message", "Novo departamento criado!");
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
@@ -71,14 +69,19 @@ public class tableMobilia extends HttpServlet {
 		}
 	}
 	
-	private void listarMobilia(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	static void listarMobilia(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			request.setAttribute("mobilias", mobiliaMapper.listar(request.getSession(),request.getParameter("tipoComodo"),
 					request.getParameter("tipoMobilia")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		request.getRequestDispatcher("/listarMobilia.jsp").forward(request,response);
+		String acao = (String)request.getParameter("acao");
+		String filtro = "listarMobilia"; 
+		if(acao != filtro ){
+			System.out.println("Entrou nesta condição -----------------");
+			request.getRequestDispatcher("/listarMobilia.jsp").forward(request,response);
+		}
 	}
 	
 	private void deletarMobilia(HttpServletRequest request, HttpServletResponse response){

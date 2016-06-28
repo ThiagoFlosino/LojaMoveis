@@ -55,8 +55,6 @@ public class mobiliaMapper {
 		}
 	}
 	
-	
-	
 	public static boolean insert(HttpSession session, String descricao, float custo, int tempoEspera, String tipoComodo, String tipoMobilia) throws Exception{
 		mobiliaMapper.Connect();
 		
@@ -85,17 +83,17 @@ public class mobiliaMapper {
 		String base_query = "SELECT * FROM MOBILIA";
 		try{
 			if(tipoComodo != null && tipoMobilia != null){
-				String q = " WHERE TIPO_COMODO LIKE '%?%'";
+				String q = " WHERE TIPO_COMODO = ?";
 				String p = " AND TIPO_MOBILIA = ?";
 				base_query += q + p;
 				STM.setString(1, tipoComodo);
 				STM.setString(2, tipoMobilia);
 			}else if(tipoComodo == null && tipoMobilia != null){
-				String q = " WHERE TIPO_MOBILIA LIKE '%?%'";
+				String q = " WHERE TIPO_MOBILIA = ?";
 				base_query += q;
 				STM.setString(1, tipoMobilia);
 			}else if(tipoComodo != null && tipoMobilia == null){
-				String q = " WHERE TIPO_COMODO LIKE '%?%'";
+				String q = " WHERE TIPO_COMODO = ?";
 				base_query += q;
 				STM.setString(1, tipoComodo);
 			}
@@ -123,10 +121,8 @@ public class mobiliaMapper {
 	}
 	public static boolean delete(HttpSession session, String[] ids) throws Exception{
 		mobiliaMapper.Connect();
-//		System.out.println("Entrou na função delete");
 		String base_query = "DELETE FROM MOBILIA WHERE ID IN(?)";
 		if(ids == null){
-	//		System.out.println("Erro Não é possivel remover todos de uma vez");
 			return false;
 		}
 		ArrayList remover = new ArrayList<String>();
