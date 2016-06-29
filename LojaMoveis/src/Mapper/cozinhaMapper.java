@@ -96,6 +96,9 @@ public class cozinhaMapper {
 				Cozinha novo = new Cozinha();
 				novo.setId(RS.getLong("id"));
 				novo.setDescricao(RS.getString("descricao"));
+				if(((Integer) RS.getInt("id")) != null){
+					novo.setMobilias(mobiliaMapper.listarMobiliaComodo("Cozinha",(int)RS.getLong("id")));
+				}
 				retorno.add(novo);
 			}
 			cozinhaMapper.close();
@@ -108,7 +111,6 @@ public class cozinhaMapper {
 	}
 	public static boolean delete(HttpSession session, String[] ids) throws Exception{
 		cozinhaMapper.Connect();
-		System.out.println("Entrou na função delete");
 		String base_query = "DELETE FROM COZINHA WHERE ID IN(?)";
 		if(ids == null){
 			System.out.println("Erro Não é possivel remover todos de uma vez");

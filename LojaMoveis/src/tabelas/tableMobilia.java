@@ -73,7 +73,7 @@ public class tableMobilia extends HttpServlet {
 	public static void listarMobilia(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			request.setAttribute("mobilias", mobiliaMapper.listar(request.getSession(),request.getParameter("tipoComodo"),
-					request.getParameter("tipoMobilia")));
+					request.getParameter("tipoMobilia"),(Integer) null));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -10,7 +10,6 @@
 <link href="css/style.css" rel="stylesheet">
 <script src="script/script.js"></script>
 
-<title>Cadastrar Cozinha</title>
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">

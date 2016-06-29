@@ -68,13 +68,13 @@ public class tableCozinha extends HttpServlet {
 		}
 	}
 	
-	private void listarCozinhas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public static void listarCozinhas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			request.setAttribute("cozinhas", cozinhaMapper.listar(request.getSession(),null));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		request.getRequestDispatcher("/teste.jsp").forward(request,response);
+		request.getRequestDispatcher("/listarCozinha.jsp").forward(request,response);
 	}
 	
 	private void deletarCozinha(HttpServletRequest request, HttpServletResponse response){
@@ -97,7 +97,7 @@ public class tableCozinha extends HttpServlet {
 		String descricao = request.getParameter("descricao");
 		try {
 			request.setAttribute("mobilias",mobiliaMapper.listar(request.getSession(),(String)request.getParameter("tipoComodo"),
-					(String)request.getParameter("tipoMobilia")));
+					(String)request.getParameter("tipoMobilia"),(Integer) null));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

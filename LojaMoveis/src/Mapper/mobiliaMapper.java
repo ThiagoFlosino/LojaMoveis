@@ -77,23 +77,28 @@ public class mobiliaMapper {
 		}
 
 	}
-	public static List<Mobilia> listar(HttpSession session, String tipoComodo, String tipoMobilia) throws Exception{
+	public static List<Mobilia> listar(HttpSession session, String tipoComodo, String tipoMobilia, int idMobilia) throws Exception{
 		mobiliaMapper.Connect();
 		List<Mobilia> retorno = new ArrayList<Mobilia>();
+		System.out.println("Entrou Listar");
 		String base_query = "SELECT * FROM MOBILIA";
 		try{
-			if(tipoComodo != null && tipoMobilia != null){
+			if(((Integer)idMobilia) != null){
+				String q = " WHERE ID = ?";
+				base_query += q;
+				STM.setInt(1, idMobilia);
+			}else if(tipoComodo != null && tipoMobilia != null){
 				System.out.println("Entrou no não nulo");
 				String q = " WHERE TIPO_COMODO like '%"+ tipoComodo + "%'";
 				String p = " AND TIPO_MOBILIA like '%"+tipoMobilia+"%'";
 				base_query += q + p;
 				STM.setString(1, tipoComodo);
 				STM.setString(2, tipoMobilia);
-			}if(tipoComodo == null && tipoMobilia != null){
+			}else if(tipoComodo == null && tipoMobilia != null){
 				System.out.println("Entrou no mobilia não nulo");
 				String q = " WHERE TIPO_MOBILIA like '%"+tipoMobilia+"%'";
 				base_query += q;
-			}if(tipoComodo != null && tipoMobilia == null){
+			}else if(tipoComodo != null && tipoMobilia == null){
 				System.out.println("Entrou no comodo não nulo");
 				String q = " WHERE TIPO_COMODO like '%"+tipoComodo+"%'";
 				base_query += q;
@@ -119,21 +124,16 @@ public class mobiliaMapper {
 			return null;
 		}
 	}
-	public static boolean delete(HttpSession session, String[] ids) throws Exception{
+	public static boolean delete(HttpSession session, String ids) throws Exception{
 		mobiliaMapper.Connect();
 		String base_query = "DELETE FROM MOBILIA WHERE ID IN(?)";
 		if(ids == null){
 			return false;
 		}
-		ArrayList remover = new ArrayList<String>();
-		for(String s : ids){
-			remover.add(s);
-		}
-		System.out.println(remover.toArray());
 		try {
 			System.out.println("Entrou no Try");
 			STM = con.prepareStatement(base_query);
-			STM.setString(1,"0");
+			STM.setString(1,ids);
 			System.out.println(STM.toString());
 			STM.execute();
 			mobiliaMapper.close();
@@ -144,5 +144,26 @@ public class mobiliaMapper {
 			return false;
 		}
 
+	}
+	public static List<Mobilia> listarMobiliaComodo(String tipoComodo, int idMobilia) throws Exception{
+		mobiliaMapper.Connect();
+		ResultSet l = null;
+		String q = "SELECT * FROM "+ tipoComodo.toLowerCase() +"_mobilia WHERE id_"+ tipoComodo.toLowerCase() + " = ?";
+		STM = con.prepareStatement(q);
+		List<Mobilia> volta = new ArrayList<Mobilia>();
+		List<Mobilia> temp = new ArrayList<Mobilia>();
+		if(((Integer)idMobilia) != null){
+			System.out.println(idMobilia);
+			STM.setInt(1, idMobilia);
+			System.out.println(STM.toString());
+			l = STM.executeQuery();
+			
+			while(l.next()){
+				temp = listar(null,null,null,l.getInt("id_mobilia"));
+				volta.add(temp.get(0));
+			}
+		}
+		mobiliaMapper.close();
+		return volta;
 	}
 }
