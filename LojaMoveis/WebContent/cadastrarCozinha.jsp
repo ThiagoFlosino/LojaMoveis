@@ -6,7 +6,7 @@
 <%@page import="objetos.Tipo"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<<jsp:include page="header.jsp"></jsp:include>
+<jsp:include page="header.jsp"></jsp:include>
 <div id="main" class="container-fluid" style="padding-top: 20px;">
 	<input type="hidden" name="tipoComodo" value="Cozinha">
 	<input type="hidden" name="visibilidade" value="false">
