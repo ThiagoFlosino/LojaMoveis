@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Mapper.cozinhaMapper;
+import Mapper.mobiliaMapper;
 
 @WebServlet("/Cozinha")
 public class tableCozinha extends HttpServlet {
@@ -36,9 +37,12 @@ public class tableCozinha extends HttpServlet {
 	
 	
 	private void criarCozinha(HttpServletRequest request, HttpServletResponse response){
-		String descricao = (String) request.getParameter("descricao");
+		String descricao = (String)request.getParameter("descricao");
+		System.out.println(descricao);
+		String[] mobilias = request.getParameterValues("listID");
+		System.out.println(mobilias.length);
 		try {
-			cozinhaMapper.insert(request.getSession(), descricao);
+			cozinhaMapper.insert(request.getSession(), descricao, mobilias);
 			request.getRequestDispatcher("/teste.jsp").forward(request, response);;
 			request.setAttribute("message", "Novo departamento criado!");
 			
@@ -88,8 +92,19 @@ public class tableCozinha extends HttpServlet {
 			e.printStackTrace();
 		}		
 	}
-	private void listarMobilia(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
-		System.out.println("Entrou no listar mobilia ---------------");
-		tableMobilia.listarMobilia(request,response);
+	void listarMobilia(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+		String tipo_mobilia = request.getParameter("tipoMobilia");
+		String descricao = request.getParameter("descricao");
+		try {
+			request.setAttribute("mobilias",mobiliaMapper.listar(request.getSession(),(String)request.getParameter("tipoComodo"),
+					(String)request.getParameter("tipoMobilia")));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		request.getRequestDispatcher("/cadastrarCozinha.jsp").forward(request, response);
+		request.setAttribute("tipoMobilia", tipo_mobilia);
+		request.setAttribute("descricao", descricao);
+		request.setAttribute("visibilidade", true);
 	}
 }

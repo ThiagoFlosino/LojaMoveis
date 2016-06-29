@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Action;
 
 import Mapper.cozinhaMapper;
 import Mapper.mobiliaMapper;
@@ -69,19 +70,25 @@ public class tableMobilia extends HttpServlet {
 		}
 	}
 	
-	static void listarMobilia(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public static void listarMobilia(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			request.setAttribute("mobilias", mobiliaMapper.listar(request.getSession(),request.getParameter("tipoComodo"),
 					request.getParameter("tipoMobilia")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		String acao = (String)request.getParameter("acao");
+		request.getRequestDispatcher("/listarMobilia.jsp").forward(request,response);
+
+	/*	String acao = (String)request.getParameter("acao");
 		String filtro = "listarMobilia"; 
-		if(acao != filtro ){
+		if(acao.equals(filtro) == false){
 			System.out.println("Entrou nesta condição -----------------");
+			System.out.println(acao);
 			request.getRequestDispatcher("/listarMobilia.jsp").forward(request,response);
-		}
+		}else{
+			System.out.println("Entrou nesta condição  de pagina-----------------");
+			request.getRequestDispatcher("/cadastrarCozinha.jsp").forward(request,response);
+		}*/
 	}
 	
 	private void deletarMobilia(HttpServletRequest request, HttpServletResponse response){

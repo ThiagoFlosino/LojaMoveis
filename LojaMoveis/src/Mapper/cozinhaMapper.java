@@ -56,7 +56,7 @@ public class cozinhaMapper {
 	
 	
 	
-	public static boolean insert(HttpSession session, String descricao) throws Exception{
+	public static boolean insert(HttpSession session, String descricao, String[] mobilias) throws Exception{
 		cozinhaMapper.Connect();
 		
 		String base_query = "insert into cozinha(descricao) values(?)";
@@ -65,6 +65,12 @@ public class cozinhaMapper {
 			STM = con.prepareStatement(base_query);
 			STM.setString(1, descricao);
 			STM.execute();
+			for(int i =0; i< mobilias.length; i++){
+				String querye = "insert into cozinha_mobilia(id_cozinha, id_mobilia) values(LAST_INSERT_ID(),"+
+			Integer.parseInt(mobilias[i])+")";
+				STM = con.prepareStatement(querye);
+				STM.execute();
+			}
 			cozinhaMapper.close();
 			return true;
 		} catch (SQLException e) {

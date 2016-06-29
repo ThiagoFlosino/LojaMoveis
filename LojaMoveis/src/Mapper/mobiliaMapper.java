@@ -83,22 +83,22 @@ public class mobiliaMapper {
 		String base_query = "SELECT * FROM MOBILIA";
 		try{
 			if(tipoComodo != null && tipoMobilia != null){
-				String q = " WHERE TIPO_COMODO = ?";
-				String p = " AND TIPO_MOBILIA = ?";
+				System.out.println("Entrou no não nulo");
+				String q = " WHERE TIPO_COMODO like '%"+ tipoComodo + "%'";
+				String p = " AND TIPO_MOBILIA like '%"+tipoMobilia+"%'";
 				base_query += q + p;
 				STM.setString(1, tipoComodo);
 				STM.setString(2, tipoMobilia);
-			}else if(tipoComodo == null && tipoMobilia != null){
-				String q = " WHERE TIPO_MOBILIA = ?";
+			}if(tipoComodo == null && tipoMobilia != null){
+				System.out.println("Entrou no mobilia não nulo");
+				String q = " WHERE TIPO_MOBILIA like '%"+tipoMobilia+"%'";
 				base_query += q;
-				STM.setString(1, tipoMobilia);
-			}else if(tipoComodo != null && tipoMobilia == null){
-				String q = " WHERE TIPO_COMODO = ?";
+			}if(tipoComodo != null && tipoMobilia == null){
+				System.out.println("Entrou no comodo não nulo");
+				String q = " WHERE TIPO_COMODO like '%"+tipoComodo+"%'";
 				base_query += q;
-				STM.setString(1, tipoComodo);
+				System.out.println(base_query);
 			}
-
-			
 			STM = con.prepareStatement(base_query);
 			ResultSet RS = STM.executeQuery();
 			while(RS.next()){
