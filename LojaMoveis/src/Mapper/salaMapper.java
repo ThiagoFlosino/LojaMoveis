@@ -11,11 +11,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-
 import objetos.Sala;
 
 public class salaMapper {
-	
 	private static String username = "root";
 	private static String senha = "root";
 	private static Connection con = null;
@@ -56,7 +54,7 @@ public class salaMapper {
 	
 	
 	
-	public static boolean insert(HttpSession session, String descricao) throws Exception{
+	public static boolean insert(HttpSession session, String descricao, String[] mobilias) throws Exception{
 		salaMapper.Connect();
 		
 		String base_query = "insert into sala(descricao) values(?)";
@@ -65,6 +63,12 @@ public class salaMapper {
 			STM = con.prepareStatement(base_query);
 			STM.setString(1, descricao);
 			STM.execute();
+			for(int i =0; i< mobilias.length; i++){
+				String querye = "insert into sala_mobilia(id_sala, id_mobilia) values(LAST_INSERT_ID(),"+
+			Integer.parseInt(mobilias[i])+")";
+				STM = con.prepareStatement(querye);
+				STM.execute();
+			}
 			salaMapper.close();
 			return true;
 		} catch (SQLException e) {
@@ -90,6 +94,9 @@ public class salaMapper {
 				Sala novo = new Sala();
 				novo.setId(RS.getLong("id"));
 				novo.setDescricao(RS.getString("descricao"));
+				if(((Integer) RS.getInt("id")) != null){
+					novo.setMobilias(mobiliaMapper.listarMobiliaComodo("Sala",(int)RS.getLong("id")));
+				}
 				retorno.add(novo);
 			}
 			salaMapper.close();
@@ -102,7 +109,6 @@ public class salaMapper {
 	}
 	public static boolean delete(HttpSession session, String[] ids) throws Exception{
 		salaMapper.Connect();
-		System.out.println("Entrou na função delete");
 		String base_query = "DELETE FROM SALA WHERE ID IN(?)";
 		if(ids == null){
 			System.out.println("Erro Não é possivel remover todos de uma vez");

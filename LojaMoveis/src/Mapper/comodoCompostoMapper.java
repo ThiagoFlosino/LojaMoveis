@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 import objetos.ComodoComposto;
 
 
+
 public class comodoCompostoMapper {
-	
 	private static String username = "root";
 	private static String senha = "root";
 	private static Connection con = null;
@@ -57,15 +57,21 @@ public class comodoCompostoMapper {
 	
 	
 	
-	public static boolean insert(HttpSession session, String descricao) throws Exception{
+	public static boolean insert(HttpSession session, String descricao, String[] mobilias) throws Exception{
 		comodoCompostoMapper.Connect();
 		
-		String base_query = "insert into comodoComposto(descricao) values(?)";
+		String base_query = "insert into ComodoComposto(descricao) values(?)";
 		
 		try {
 			STM = con.prepareStatement(base_query);
 			STM.setString(1, descricao);
 			STM.execute();
+			for(int i =0; i< mobilias.length; i++){
+				String querye = "insert into comodoComposto_mobilia(id_comodoComposto, id_mobilia) values(LAST_INSERT_ID(),"+
+			Integer.parseInt(mobilias[i])+")";
+				STM = con.prepareStatement(querye);
+				STM.execute();
+			}
 			comodoCompostoMapper.close();
 			return true;
 		} catch (SQLException e) {
@@ -91,6 +97,9 @@ public class comodoCompostoMapper {
 				ComodoComposto novo = new ComodoComposto();
 				novo.setId(RS.getLong("id"));
 				novo.setDescricao(RS.getString("descricao"));
+				if(((Integer) RS.getInt("id")) != null){
+					novo.setMobilias(mobiliaMapper.listarMobiliaComodo("ComodoComposto",(int)RS.getLong("id")));
+				}
 				retorno.add(novo);
 			}
 			comodoCompostoMapper.close();
@@ -103,7 +112,6 @@ public class comodoCompostoMapper {
 	}
 	public static boolean delete(HttpSession session, String[] ids) throws Exception{
 		comodoCompostoMapper.Connect();
-		System.out.println("Entrou na função delete");
 		String base_query = "DELETE FROM COMODO COMPOSTO WHERE ID IN(?)";
 		if(ids == null){
 			System.out.println("Erro Não é possivel remover todos de uma vez");

@@ -8,11 +8,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+import Mapper.mobiliaMapper;
 import Mapper.salaMapper;
 
 @WebServlet("/Sala")
 public class tableSala extends HttpServlet {
+
 	
+
 	private static final long serialVersionUID = -3159197991777622791L;
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Do Post---------------------");
@@ -22,6 +26,10 @@ public class tableSala extends HttpServlet {
 				case "Adicionar":
 				criarSala(request,response);
 					break;
+				case "listarMobilia":
+					listarMobilia(request,response);
+					break;
+
 			}
 		}else{
 			request.getRequestDispatcher("/teste.jsp").forward(request,response);	
@@ -30,9 +38,12 @@ public class tableSala extends HttpServlet {
 	
 	
 	private void criarSala(HttpServletRequest request, HttpServletResponse response){
-		String descricao = (String) request.getParameter("descricao");
+		String descricao = (String)request.getParameter("descricao");
+		System.out.println(descricao);
+		String[] mobilias = request.getParameterValues("listID");
+		System.out.println(mobilias.length);
 		try {
-			salaMapper.insert(request.getSession(), descricao);
+			salaMapper.insert(request.getSession(), descricao, mobilias);
 			request.getRequestDispatcher("/teste.jsp").forward(request, response);;
 			request.setAttribute("message", "Novo departamento criado!");
 			
@@ -58,13 +69,13 @@ public class tableSala extends HttpServlet {
 		}
 	}
 	
-	private void listarSalas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public static void listarSalas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			request.setAttribute("salas", salaMapper.listar(request.getSession(),null));
+			request.setAttribute("Salas", salaMapper.listar(request.getSession(),null));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		request.getRequestDispatcher("/teste.jsp").forward(request,response);
+		request.getRequestDispatcher("/listarSala.jsp").forward(request,response);
 	}
 	
 	private void deletarSala(HttpServletRequest request, HttpServletResponse response){
@@ -82,5 +93,19 @@ public class tableSala extends HttpServlet {
 			e.printStackTrace();
 		}		
 	}
-
+	void listarMobilia(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+		String tipo_mobilia = request.getParameter("tipoMobilia");
+		String descricao = request.getParameter("descricao");
+		try {
+			request.setAttribute("mobilias",mobiliaMapper.listar(request.getSession(),(String)request.getParameter("tipoComodo"),
+					(String)request.getParameter("tipoMobilia"),(Integer) null));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		request.getRequestDispatcher("/cadastrarSala.jsp").forward(request, response);
+		request.setAttribute("tipoMobilia", tipo_mobilia);
+		request.setAttribute("descricao", descricao);
+		request.setAttribute("visibilidade", true);
+	}
 }

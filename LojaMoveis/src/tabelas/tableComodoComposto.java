@@ -9,11 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Mapper.comodoCompostoMapper;
+import Mapper.cozinhaMapper;
+import Mapper.mobiliaMapper;
 import Mapper.quartoMapper;
+import Mapper.salaMapper;
 
 @WebServlet("/ComodoComposto")
-public class tableComodoComposto extends HttpServlet{
+public class tableComodoComposto extends HttpServlet {
+
 	
+
 	private static final long serialVersionUID = -3159197991777622791L;
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Do Post---------------------");
@@ -23,6 +28,10 @@ public class tableComodoComposto extends HttpServlet{
 				case "Adicionar":
 				criarComodoComposto(request,response);
 					break;
+				case "listarMobilia":
+					listarMobilia(request,response);
+					break;
+
 			}
 		}else{
 			request.getRequestDispatcher("/teste.jsp").forward(request,response);	
@@ -31,9 +40,12 @@ public class tableComodoComposto extends HttpServlet{
 	
 	
 	private void criarComodoComposto(HttpServletRequest request, HttpServletResponse response){
-		String descricao = (String) request.getParameter("descricao");
+		String descricao = (String)request.getParameter("descricao");
+		System.out.println(descricao);
+		String[] mobilias = request.getParameterValues("listID");
+		System.out.println(mobilias.length);
 		try {
-			comodoCompostoMapper.insert(request.getSession(), descricao);
+			comodoCompostoMapper.insert(request.getSession(), descricao, mobilias);
 			request.getRequestDispatcher("/teste.jsp").forward(request, response);;
 			request.setAttribute("message", "Novo departamento criado!");
 			
@@ -59,13 +71,13 @@ public class tableComodoComposto extends HttpServlet{
 		}
 	}
 	
-	private void listarComodosCompostos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public static void listarComodosCompostos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			request.setAttribute("ComodoCompostos", comodoCompostoMapper.listar(request.getSession(),null));
+			request.setAttribute("ComodosCompostos", comodoCompostoMapper.listar(request.getSession(),null));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		request.getRequestDispatcher("/teste.jsp").forward(request,response);
+		request.getRequestDispatcher("/listarComodoComposto.jsp").forward(request,response);
 	}
 	
 	private void deletarComodoComposto(HttpServletRequest request, HttpServletResponse response){
@@ -83,6 +95,19 @@ public class tableComodoComposto extends HttpServlet{
 			e.printStackTrace();
 		}		
 	}
-	
-
+	void listarMobilia(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+		String tipo_mobilia = request.getParameter("tipoMobilia");
+		String descricao = request.getParameter("descricao");
+		try {
+			request.setAttribute("mobilias",mobiliaMapper.listar(request.getSession(),(String)request.getParameter("tipoComodo"),
+					(String)request.getParameter("tipoMobilia"),(Integer) null));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		request.getRequestDispatcher("/cadastrarComodoComposto.jsp").forward(request, response);
+		request.setAttribute("tipoMobilia", tipo_mobilia);
+		request.setAttribute("descricao", descricao);
+		request.setAttribute("visibilidade", true);
+	}
 }
